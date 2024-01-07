@@ -60,7 +60,6 @@ public class GravitySimulationHandler : MonoBehaviour
             particles[j].Acceleration -= Vector2.one * forceVector / particles[j].Mass;
         }
     }
-
     void ContinousWallsCollisionDetection(int i)
     {
         //calculate circle position in the next frame
