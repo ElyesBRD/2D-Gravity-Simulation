@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class GravitySimulationHandler : MonoBehaviour
@@ -36,14 +37,14 @@ public class GravitySimulationHandler : MonoBehaviour
     {
         for (int i = 0; i < particles.Length; i++)
         {
-            CalculateParticlesVelicities(i);
-            ContinousWallsCollisionDetection(i);
+            //CalculateParticlesVelicities(i);
             particles[i].Position += particles[i].Velocity * Time.deltaTime; //calculates the position of the current cirlce
             particles[i].Velocity += particles[i].Acceleration * Time.deltaTime; //calculates the velocity of the current circle
             TransformParticles[i].position = particles[i].Position;
         }
+        BarnesHutAlgorithm.CalculateGravity(particles, -BorderSize, BorderSize);
     }
-    public void CalculateParticlesVelicities(int i)
+    public void CalculateParticlesVelicities(Particle[] particles ,int i)
     {
         for (int j = i + 1; j < particles.Length; j++)
         {
@@ -60,7 +61,7 @@ public class GravitySimulationHandler : MonoBehaviour
             particles[j].Acceleration -= Vector2.one * forceVector / particles[j].Mass;
         }
     }
-    void ContinousWallsCollisionDetection(int i)
+    public void ContinousWallsCollisionDetection(int i)
     {
         //calculate circle position in the next frame
         float NextXPos = particles[i].Position.x + particles[i].Velocity.x * Time.deltaTime;
