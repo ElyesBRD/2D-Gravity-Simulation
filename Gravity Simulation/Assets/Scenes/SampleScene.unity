@@ -178,7 +178,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 1000
+  orthographic size: 20
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -290,10 +290,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c94786b67ef73646b8c647c36ef70f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  NParticles: 1000
+  NParticles: 10
   StartVelocity: {x: 0, y: 0}
   Gravitational_constant: 1
-  BorderSize: 1000000
+  BorderSize: 20
   MinVelocityToFreez: 2
   TransformParticles: []
   prefabParticle: {fileID: 5812540464093860582, guid: c22ee8a07d54b634abc7b12f17786bca, type: 3}

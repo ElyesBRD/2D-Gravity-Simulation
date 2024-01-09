@@ -41,8 +41,9 @@ public class GravitySimulationHandler : MonoBehaviour
             particles[i].Position += particles[i].Velocity * Time.deltaTime; //calculates the position of the current cirlce
             particles[i].Velocity += particles[i].Acceleration * Time.deltaTime; //calculates the velocity of the current circle
             TransformParticles[i].position = particles[i].Position;
+            ContinousWallsCollisionDetection(i);
         }
-        BarnesHutAlgorithm.CalculateGravity(particles, -BorderSize, BorderSize);
+        BarnesHutAlgorithm.CalculateGravity(particles, -BorderSize, BorderSize,0);
     }
     public void CalculateParticlesVelicities(Particle[] particles ,int i)
     {

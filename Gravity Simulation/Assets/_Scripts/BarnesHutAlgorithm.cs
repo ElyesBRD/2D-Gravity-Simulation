@@ -3,8 +3,27 @@ using UnityEngine;
 
 public class BarnesHutAlgorithm
 {
-    public static Particle CalculateGravity(Particle[] particles, float minBorder, float maxBorder)
+    public static Particle CalculateGravity(Particle[] particles, float minBorder, float maxBorder , int repetition)
     {
+        if (repetition >= 3)
+        {
+            Vector2 _newPos = new Vector2();
+            float _newMass = 0;
+            int _numberOfNotNull = 0;
+
+            for (int i = 0; i < particles.Length; i++)
+            {
+                if (particles[i] == null) continue;
+
+                GravitySimulationHandler.instance.CalculateParticlesVelicities(particles, i);
+                _newPos += particles[i].Position;
+                _newMass += particles[i].Mass;
+                _numberOfNotNull++;
+            }
+
+            _newPos /= _numberOfNotNull;
+            return new Particle(_newPos, Vector2.zero, _newMass);
+        }
         if (particles.Length == 0) return null;
         if (particles.Length == 1)
         {
@@ -42,27 +61,29 @@ public class BarnesHutAlgorithm
                 }
             }
         }
+
+        int currentRepetition = 0;
         List<Particle> newParticles = new List<Particle>();
-        Particle currentParticle = CalculateGravity(UpRight.ToArray(), Mid, maxBorder);
-        if (currentParticle != null)
-        {
-            newParticles.Add(currentParticle);
-        }
-        currentParticle = CalculateGravity(UpLeft.ToArray(), Mid, maxBorder);
-        if (currentParticle != null)
-        {
-            newParticles.Add(currentParticle);
-        }
-        currentParticle = CalculateGravity(BottomRight.ToArray(), minBorder, Mid);
-        if (currentParticle != null)
-        {
-            newParticles.Add(currentParticle);
-        }
-        currentParticle =CalculateGravity(BottomLeft.ToArray(), minBorder, Mid);
-        if (currentParticle != null)
-        {
-            newParticles.Add(currentParticle);
-        }
+        Particle currentP = null;
+        if (UpRight.Count == particles.Length) currentRepetition = repetition+1;
+        else currentRepetition = 0;
+        currentP = CalculateGravity(UpRight.ToArray(), Mid, maxBorder, currentRepetition);
+        if (currentP != null) newParticles.Add(currentP);
+
+        if (UpRight.Count == particles.Length) currentRepetition = repetition + 1;
+        else currentRepetition = 0;
+        newParticles.Add(CalculateGravity(UpLeft.ToArray(), Mid, maxBorder, currentRepetition));
+        if (currentP != null) newParticles.Add(currentP);
+
+        if (UpRight.Count == particles.Length) currentRepetition = repetition + 1;
+        else currentRepetition = 0;
+        currentP = CalculateGravity(BottomRight.ToArray(), minBorder, Mid, currentRepetition);
+        if (currentP != null) newParticles.Add(currentP);
+
+        if (UpRight.Count == particles.Length) currentRepetition = repetition + 1;
+        else currentRepetition = 0;
+        currentP = CalculateGravity(BottomLeft.ToArray(), minBorder, Mid, currentRepetition);
+        if (currentP != null) newParticles.Add(currentP);
 
         Vector2 newPos = new Vector2();
         float newMass = 0;
@@ -70,7 +91,6 @@ public class BarnesHutAlgorithm
 
         for (int i = 0; i < newParticles.Count; i++)
         {
-            GravitySimulationHandler.instance.ContinousWallsCollisionDetection(i);
             GravitySimulationHandler.instance.CalculateParticlesVelicities(newParticles.ToArray(), i);
             newPos += newParticles[i].Position;
             newMass += newParticles[i].Mass;
