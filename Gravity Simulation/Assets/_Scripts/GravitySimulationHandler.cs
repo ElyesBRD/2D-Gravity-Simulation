@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class GravitySimulationHandler : MonoBehaviour
@@ -12,6 +11,7 @@ public class GravitySimulationHandler : MonoBehaviour
     public float Gravitational_constant = 1;
     public float BorderSize;
     public float MinVelocityToFreez = 2;
+    public float MinimumDistanceBetweenCenters = 0.1f;
 
     public List<Transform> TransformParticles;
     public GameObject prefabParticle;
@@ -49,7 +49,7 @@ public class GravitySimulationHandler : MonoBehaviour
     {
         for (int j = i + 1; j < particles.Length; j++)
         {
-            if (Vector3.Distance(particles[i].Position, particles[j].Position) < 0.1f) return;
+            if (Vector3.Distance(particles[i].Position, particles[j].Position) < MinimumDistanceBetweenCenters) return;
 
             Vector3 direction = particles[j].Position - particles[i].Position;
             float distance = direction.magnitude;

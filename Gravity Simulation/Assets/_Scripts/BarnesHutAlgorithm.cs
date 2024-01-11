@@ -1,16 +1,16 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class BarnesHutAlgorithm
 {
     public static Particle CalculateGravity(Particle[] particles, float minBorder, float maxBorder, int repetition)
     {
-        if (particles.Length == 0) return null;
         if (particles.Length == 1)
         {
             return particles[0];
         }
-        if (repetition == 4)
+        if (repetition == 5)
         {
             int _amountOfParticlesExist = 0;
             Vector2 _medposition = Vector2.zero;
@@ -66,33 +66,19 @@ public class BarnesHutAlgorithm
         }
 
         List<Particle> sommeOfParticles = new List<Particle>();
-        sommeOfParticles.Add(CalculateGravity(UpLeft.ToArray(), Mid, maxBorder, currentRepetition));
-        sommeOfParticles.Add(CalculateGravity(UpRight.ToArray(), Mid, maxBorder, currentRepetition));
-        sommeOfParticles.Add(CalculateGravity(BottomLeft.ToArray(), minBorder, Mid, currentRepetition));
-        sommeOfParticles.Add(CalculateGravity(BottomRight.ToArray(), minBorder, Mid, currentRepetition));
+        if (UpLeft.Count > 0) sommeOfParticles.Add(CalculateGravity(UpLeft.ToArray(), Mid, maxBorder, currentRepetition));
+        if (UpRight.Count > 0) sommeOfParticles.Add(CalculateGravity(UpRight.ToArray(), Mid, maxBorder, currentRepetition));
+        if (BottomLeft.Count > 0) sommeOfParticles.Add(CalculateGravity(BottomLeft.ToArray(), minBorder, Mid, currentRepetition));
+        if (BottomRight.Count > 0) sommeOfParticles.Add(CalculateGravity(BottomRight.ToArray(), minBorder, Mid, currentRepetition));
 
-        int amountOfParticlesExist = 0;
         Vector2 medposition = Vector2.zero;
         float totalMass = 0;
-        int index = 0;
-        while (index != sommeOfParticles.Count)
-        {
-            if (sommeOfParticles[index] != null)
-            {
-                amountOfParticlesExist++;
-                medposition += sommeOfParticles[index].Position;
-                totalMass += sommeOfParticles[index].Mass;
-                index++;
-            }
-            else
-            {
-                sommeOfParticles.RemoveAt(index);
-            }
-        }
         for (int i = 0; i < sommeOfParticles.Count; i++)
         {
+            medposition += sommeOfParticles[i].Position;
+            totalMass += sommeOfParticles[i].Mass;
             GravitySimulationHandler.instance.CalculateParticlesVelicities(sommeOfParticles.ToArray(), i);
         }
-        return new Particle(medposition / amountOfParticlesExist, Vector2.zero, totalMass);
+        return new Particle(medposition / sommeOfParticles.Count, Vector2.zero, totalMass);
     }
 }

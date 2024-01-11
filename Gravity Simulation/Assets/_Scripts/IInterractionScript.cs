@@ -6,6 +6,7 @@ public class IInterractionScript : MonoBehaviour
     Vector3 ClickedPosition;
     bool isPressingSpawnButton;
     Transform GhostCircle;
+    public float spawnWithMass = 1;
     private void Start()
     {
         GhostCircle = Instantiate(GravitySimulationHandler.instance.prefabParticle, Vector3.zero, Quaternion.identity).transform;
@@ -26,7 +27,7 @@ public class IInterractionScript : MonoBehaviour
         if (Input.GetButtonUp("Fire1"))
         {
             List<Particle> newCirclesArray = new List<Particle>(GravitySimulationHandler.instance.particles);
-            newCirclesArray.Add(new Particle(ClickedPosition, CursorScript.worldPosition - ClickedPosition, 1));
+            newCirclesArray.Add(new Particle(ClickedPosition, CursorScript.worldPosition - ClickedPosition, spawnWithMass));
             GravitySimulationHandler.instance.UpdateParticlesArray(newCirclesArray.ToArray());
 
             GhostCircle.gameObject.SetActive(false);
