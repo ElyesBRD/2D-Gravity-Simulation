@@ -136,6 +136,7 @@ GameObject:
   - component: {fileID: 519420029}
   - component: {fileID: 519420034}
   - component: {fileID: 519420033}
+  - component: {fileID: 519420035}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -234,6 +235,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c840ecd5933862246888846a8b9175a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &519420035
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 519420028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4da6a1c99925406448ac3adcb9695405, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Movementspeed: 0.5
+  ZoomSpeed: 2
 --- !u!1 &860191473
 GameObject:
   m_ObjectHideFlags: 0
@@ -291,10 +306,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c94786b67ef73646b8c647c36ef70f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  NParticles: 5
+  NParticles: 0
   StartVelocity: {x: 1, y: 1}
   Gravitational_constant: 1
-  BorderSize: 20
+  BorderSize: 500
   MinVelocityToFreez: 2
   MinimumDistanceBetweenCenters: 0
   TransformParticles: []
