@@ -43,7 +43,7 @@ public class GravitySimulationHandler : MonoBehaviour
             TransformParticles[i].position = particles[i].Position;
             ContinousWallsCollisionDetection(i);
         }
-        BarnesHutAlgorithm.CalculateGravity(particles, -BorderSize, BorderSize,0);
+        //BarnesHutAlgorithm.CalculateGravity(particles, -BorderSize, BorderSize,0);
     }
     public void CalculateParticlesVelicities(Particle[] particles ,int i)
     {
