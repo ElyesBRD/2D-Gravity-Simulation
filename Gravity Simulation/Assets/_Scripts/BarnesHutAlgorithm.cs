@@ -1,53 +1,136 @@
-using System.Collections.Generic;
 using UnityEngine;
 
 public class BarnesHutAlgorithm
 {
     public static void CreateBarnesHutTree(Particle[] particles, float minBorder, float maxBorder)
     {
-        Node node = CalculateGravity(new Node(particles, Vector2.zero, 0, null, null, null, null), minBorder, maxBorder, 0);
-    }
-    public static Node CalculateGravity(Node currentNode, float minBorder, float maxBorder, int repetition)
-    {
-        if (currentNode.particles.Length == 1)
+        Node tree = new Node(Vector2.zero, 0, null, null, null, null, new Particle[2] { particles[0], null });
+        for (int i = 1; i < particles.Length; i++)
         {
-            return currentNode;
+            addNode(tree, particles[i] ,minBorder, maxBorder, 0);
         }
-
-        List<Particle> UpRight = new List<Particle>();
-        List<Particle> UpLeft = new List<Particle>();
-        List<Particle> BottomRight = new List<Particle>();
-        List<Particle> BottomLeft = new List<Particle>();
-
-        currentNode.widhOfReagon = Mathf.Abs(maxBorder - minBorder);
-        float Mid = (maxBorder + minBorder) / 2;
-
-        for (int i = 0; i < currentNode.particles.Length; i++)
+    }
+    public static void addNode(Node currentNode,Particle newParticle, float minBorder, float maxBorder, int repetition)
+    {
+        if (repetition == 2)
         {
-            if (currentNode.particles[i].Position.y >= Mid)
+            currentNode.particles[1] = newParticle;
+        }
+        else
+        {
+            float Mid = (maxBorder + minBorder) / 2;
+
+            if (currentNode.particles[0].Position.y >= Mid)
             {
-                if (currentNode.particles[i].Position.x >= Mid)
+                if (currentNode.particles[0].Position.x >= Mid)
                 {
-                    UpRight.Add(currentNode.particles[i]);
+                    currentNode.upRight = new Node(Vector2.zero, 0, null, null, null, null, new Particle[2] { currentNode.particles[0], null });
                 }
                 else
                 {
-                    UpLeft.Add(currentNode.particles[i]);
+                    currentNode.upLeft = new Node(Vector2.zero, 0, null, null, null, null, new Particle[2] { currentNode.particles[0], null });
                 }
             }
             else
             {
-                if (currentNode.particles[i].Position.x >= Mid)
+                if (currentNode.particles[0].Position.x >= Mid)
                 {
-                    BottomRight.Add(currentNode.particles[i]);
+                    currentNode.bottomRight = new Node(Vector2.zero, 0, null, null, null, null, new Particle[2] { currentNode.particles[0], null });
                 }
                 else
                 {
-                    BottomLeft.Add(currentNode.particles[i]);
+                    currentNode.bottomLeft = new Node(Vector2.zero, 0, null, null, null, null, new Particle[2] { currentNode.particles[0], null });
+                }
+            }
+            currentNode.particles[0] = null;
+
+            if (newParticle.Position.y >= Mid)
+            {
+                if (newParticle.Position.x >= Mid)
+                {
+                    if (currentNode.upRight != null)
+                    {
+                        //currentNode.upRight.particles[1] = newParticle;
+                        addNode(currentNode.upRight, newParticle, Mid, maxBorder, repetition + 1);
+                    }
+                    else
+                    {
+                        currentNode.upRight = new Node(Vector2.zero, 0, null, null, null, null, new Particle[2] { currentNode.particles[0], null });
+                    }
+                }
+                else
+                {
+                    if (currentNode.upLeft != null)
+                    {
+                        //currentNode.upLeft.particles[1] = newParticle;
+                        addNode(currentNode.upLeft, newParticle, Mid, maxBorder, repetition + 1);
+                    }
+                    else
+                    {
+                        currentNode.upLeft = new Node(Vector2.zero, 0, null, null, null, null, new Particle[2] { currentNode.particles[0], null });
+                    }
+                }
+            }
+            else
+            {
+                if (newParticle.Position.x >= Mid)
+                {
+                    if (currentNode.bottomRight != null)
+                    {
+                        //currentNode.bottomRight.particles[1] = newParticle;
+                        addNode(currentNode.bottomRight, newParticle, minBorder, Mid, repetition+1);
+                    }
+                    else
+                    {
+                        currentNode.bottomRight = new Node(Vector2.zero, 0, null, null, null, null, new Particle[2] { currentNode.particles[0], null });
+                    }
+                }
+                else
+                {
+                    if (currentNode.bottomLeft != null)
+                    {
+                        //currentNode.bottomLeft.particles[1] = newParticle;
+                        addNode(currentNode.bottomLeft, newParticle, minBorder, Mid, repetition + 1);
+                    }
+                    else
+                    {
+                        currentNode.bottomLeft = new Node(Vector2.zero, 0, null, null, null, null, new Particle[2] { currentNode.particles[0], null });
+                    }
                 }
             }
         }
-        return null;
+        if (currentNode.upLeft != null)
+        {
+            for (int i = 0; i < currentNode.upLeft.particles.Length; i++)
+            {
+                if (currentNode.upLeft.particles[i] == null) break;
+                currentNode.position += currentNode.upLeft.particles[i].Position * currentNode.upLeft.particles[i].Mass;
+            }
+        }
+        if (currentNode.upRight != null)
+        {
+            for (int i = 0; i < currentNode.upRight.particles.Length; i++)
+            {
+                if (currentNode.upRight.particles[i] == null) break;
+                currentNode.position += currentNode.upRight.particles[i].Position * currentNode.upRight.particles[i].Mass;
+            }
+        }
+        if (currentNode.bottomLeft != null)
+        {
+            for (int i = 0; i < currentNode.bottomLeft.particles.Length; i++)
+            {
+                if (currentNode.bottomLeft.particles[i] == null) break;
+                currentNode.position += currentNode.bottomLeft.particles[i].Position * currentNode.bottomLeft.particles[i].Mass;
+            }
+        }
+        if (currentNode.bottomRight != null)
+        {
+            for (int i = 0; i < currentNode.bottomRight.particles.Length; i++)
+            {
+                if (currentNode.bottomRight.particles[i] == null) break;
+                currentNode.position += currentNode.bottomRight.particles[i].Position * currentNode.bottomRight.particles[i].Mass;
+            }
+        }
     }
     //public static Particle CalculateGravity(Particle[] particles, float minBorder, float maxBorder, int repetition)
     //{
@@ -138,7 +221,7 @@ public class Node
     public Node upRight;
     public Node bottomLeft;
     public Node bottomRight;
-    public Node (Particle[] particles, Vector2 position, float mass, Node upLeft, Node upRight, Node bottomLeft, Node bottomRight)
+    public Node (Vector2 position, float mass, Node upLeft, Node upRight, Node bottomLeft, Node bottomRight, Particle[] particles = null)
     {
         this.particles = particles;
         this.position = position;
