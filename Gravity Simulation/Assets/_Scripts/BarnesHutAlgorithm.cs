@@ -12,37 +12,39 @@ public class BarnesHutAlgorithm
     }
     public static void addNode(Node currentNode,Particle newParticle, float minBorder, float maxBorder, int repetition)
     {
-        if (repetition == 2)
+        if (repetition == 4)
         {
             currentNode.particles[1] = newParticle;
         }
         else
         {
             float Mid = (maxBorder + minBorder) / 2;
-
-            if (currentNode.particles[0].Position.y >= Mid)
+            if (currentNode.particles[0] != null)
             {
-                if (currentNode.particles[0].Position.x >= Mid)
+                if (currentNode.particles[0].Position.y >= Mid)
                 {
-                    currentNode.upRight = new Node(Vector2.zero, 0, null, null, null, null, new Particle[2] { currentNode.particles[0], null });
+                    if (currentNode.particles[0].Position.x >= Mid)
+                    {
+                        currentNode.upRight = new Node(Vector2.zero, 0, null, null, null, null, new Particle[2] { currentNode.particles[0], null });
+                    }
+                    else
+                    {
+                        currentNode.upLeft = new Node(Vector2.zero, 0, null, null, null, null, new Particle[2] { currentNode.particles[0], null });
+                    }
                 }
                 else
                 {
-                    currentNode.upLeft = new Node(Vector2.zero, 0, null, null, null, null, new Particle[2] { currentNode.particles[0], null });
+                    if (currentNode.particles[0].Position.x >= Mid)
+                    {
+                        currentNode.bottomRight = new Node(Vector2.zero, 0, null, null, null, null, new Particle[2] { currentNode.particles[0], null });
+                    }
+                    else
+                    {
+                        currentNode.bottomLeft = new Node(Vector2.zero, 0, null, null, null, null, new Particle[2] { currentNode.particles[0], null });
+                    }
                 }
+                currentNode.particles[0] = null;
             }
-            else
-            {
-                if (currentNode.particles[0].Position.x >= Mid)
-                {
-                    currentNode.bottomRight = new Node(Vector2.zero, 0, null, null, null, null, new Particle[2] { currentNode.particles[0], null });
-                }
-                else
-                {
-                    currentNode.bottomLeft = new Node(Vector2.zero, 0, null, null, null, null, new Particle[2] { currentNode.particles[0], null });
-                }
-            }
-            currentNode.particles[0] = null;
 
             if (newParticle.Position.y >= Mid)
             {
@@ -99,37 +101,46 @@ public class BarnesHutAlgorithm
                 }
             }
         }
+        int totalParticles = 0;
         if (currentNode.upLeft != null)
         {
             for (int i = 0; i < currentNode.upLeft.particles.Length; i++)
             {
                 if (currentNode.upLeft.particles[i] == null) break;
+                totalParticles++;
                 currentNode.position += currentNode.upLeft.particles[i].Position * currentNode.upLeft.particles[i].Mass;
             }
+            currentNode.position /= totalParticles;
         }
         if (currentNode.upRight != null)
         {
             for (int i = 0; i < currentNode.upRight.particles.Length; i++)
             {
                 if (currentNode.upRight.particles[i] == null) break;
+                totalParticles++;
                 currentNode.position += currentNode.upRight.particles[i].Position * currentNode.upRight.particles[i].Mass;
             }
+            currentNode.position /= totalParticles;
         }
         if (currentNode.bottomLeft != null)
         {
             for (int i = 0; i < currentNode.bottomLeft.particles.Length; i++)
             {
                 if (currentNode.bottomLeft.particles[i] == null) break;
+                totalParticles++;
                 currentNode.position += currentNode.bottomLeft.particles[i].Position * currentNode.bottomLeft.particles[i].Mass;
             }
+            currentNode.position /= totalParticles;
         }
         if (currentNode.bottomRight != null)
         {
             for (int i = 0; i < currentNode.bottomRight.particles.Length; i++)
             {
                 if (currentNode.bottomRight.particles[i] == null) break;
+                totalParticles++;
                 currentNode.position += currentNode.bottomRight.particles[i].Position * currentNode.bottomRight.particles[i].Mass;
             }
+            currentNode.position /= totalParticles;
         }
     }
     //public static Particle CalculateGravity(Particle[] particles, float minBorder, float maxBorder, int repetition)
