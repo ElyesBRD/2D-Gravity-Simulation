@@ -306,10 +306,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c94786b67ef73646b8c647c36ef70f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  NParticles: 3
+  NParticles: 0
   StartVelocity: {x: 0, y: 0}
   Gravitational_constant: 1
-  BorderSize: 500
+  BorderSize: 20
   MinVelocityToFreez: 2
   MinimumDistanceBetweenCenters: 0
   TransformParticles: []
