@@ -5,7 +5,7 @@ public class GravitySimulationHandler : MonoBehaviour
 {
     public static GravitySimulationHandler instance;
     public BarnesHutAlgorithm barnesHutAlgorithm = new BarnesHutAlgorithm();
-    public BarnesHutDepthForSearch barnesHutDepthForSearch = new BarnesHutDepthForSearch();
+    public BarnesHutDepthFirstSearch barnesHutDepthFirstSearch = new BarnesHutDepthFirstSearch();
     public Particle[] particles;
 
     public int NParticles;
@@ -48,7 +48,7 @@ public class GravitySimulationHandler : MonoBehaviour
         if (particles.Length >= 2)
         {
             Node tree = barnesHutAlgorithm.CreateBarnesHutTree(particles, -BorderSize, BorderSize);
-            barnesHutDepthForSearch.SimulateGravity(tree, particles, .5f, Gravitational_constant);
+            barnesHutDepthFirstSearch.SimulateGravity(tree, particles, .5f, Gravitational_constant);
         }
     }
     public void CalculateParticlesVelicities(Particle[] particles ,int i)

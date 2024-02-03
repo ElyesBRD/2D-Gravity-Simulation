@@ -222,7 +222,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb5a02de21966e049abb6a36e669edc4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnWithMass: 100000
+  spawnWithMass: 1
 --- !u!114 &519420034
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -294,7 +294,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1a913415bad5bc418c0eab3dceccb9c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mass: 0.0001
+  mass: 1
 --- !u!114 &860191476
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -307,10 +307,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c94786b67ef73646b8c647c36ef70f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  NParticles: 10000
+  NParticles: 0
   StartVelocity: {x: 10, y: 10}
-  Gravitational_constant: 0.001
-  BorderSize: 5000
+  Gravitational_constant: 1
+  BorderSize: 10
   MinVelocityToFreez: 2
   MinimumDistanceBetweenCenters: 0
   TransformParticles: []

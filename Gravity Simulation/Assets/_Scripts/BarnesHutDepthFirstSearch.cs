@@ -1,5 +1,5 @@
 using UnityEngine;
-public class BarnesHutDepthForSearch
+public class BarnesHutDepthFirstSearch
 {
     public float Theta = .5f;
     public float Gravitational_constant = 1;
