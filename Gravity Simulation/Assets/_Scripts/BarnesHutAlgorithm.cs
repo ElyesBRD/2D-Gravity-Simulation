@@ -1,7 +1,7 @@
 using UnityEngine;
 public class BarnesHutAlgorithm
 {
-    public static void CreateBarnesHutTree(Particle[] particles, float minBorder, float maxBorder)
+    public Node CreateBarnesHutTree(Particle[] particles, float minBorder, float maxBorder)
     {
         Node tree = new Node();
         tree.dWidthOfBox = Mathf.Abs(maxBorder - minBorder);
@@ -9,8 +9,9 @@ public class BarnesHutAlgorithm
         {
             addNode(tree, particles[i], minBorder, maxBorder, minBorder, maxBorder);
         }
+        return tree;
     }
-    public static void addNode(Node currentNode, Particle newParticle, float xMinBorder, float xMaxBorder, float yMinBorder, float yMaxBorder)
+    public void addNode(Node currentNode, Particle newParticle, float xMinBorder, float xMaxBorder, float yMinBorder, float yMaxBorder)
     {
         float totalMass = 0;
         Vector2 centerOfMass = Vector2.zero;
@@ -24,20 +25,18 @@ public class BarnesHutAlgorithm
         {
             float xMid = (xMaxBorder + xMinBorder) / 2;
             float yMid = (yMaxBorder + yMinBorder) / 2;
-            float dWidthOfBox = Mathf.Abs(xMaxBorder - xMinBorder);
-            float nextdWidthOfBox = dWidthOfBox / 2;
 
             if (currentNode.particle != null)
             {
-                SortParticleInChildrenNodes(currentNode, currentNode.particle, xMid, xMinBorder, xMaxBorder, yMid, yMinBorder, yMaxBorder, nextdWidthOfBox);
+                SortParticleInChildrenNodes(currentNode, currentNode.particle, xMid, xMinBorder, xMaxBorder, yMid, yMinBorder, yMaxBorder, currentNode.dWidthOfBox / 2);
                 currentNode.particle = null;
             }
-            SortParticleInChildrenNodes(currentNode, newParticle, xMid, xMinBorder, xMaxBorder, yMid, yMinBorder, yMaxBorder, nextdWidthOfBox);
+            SortParticleInChildrenNodes(currentNode, newParticle, xMid, xMinBorder, xMaxBorder, yMid, yMinBorder, yMaxBorder, currentNode.dWidthOfBox / 2);
         }
 
         CalculateNodeParticleCenterOfMass(currentNode, totalMass, centerOfMass);
     }
-    public static void SortParticleInChildrenNodes(Node currentNode, Particle particle, float xMid, float xMinBorder, float xMaxBorder, float yMid, float yMinBorder, float yMaxBorder, float nextdWidthOfBox)
+    public void SortParticleInChildrenNodes(Node currentNode, Particle particle, float xMid, float xMinBorder, float xMaxBorder, float yMid, float yMinBorder, float yMaxBorder, float nextdWidthOfBox)
     {
         if (particle.Position.y >= yMid)
         {
@@ -62,7 +61,7 @@ public class BarnesHutAlgorithm
             }
         }
     }
-    public static Node addParticleToChildNode(Node child, Particle particle, float xMinBorder, float xMaxBorder, float yMinBorder, float yMaxBorder, float nextdWidthOfBox)
+    public Node addParticleToChildNode(Node child, Particle particle, float xMinBorder, float xMaxBorder, float yMinBorder, float yMaxBorder, float nextdWidthOfBox)
     {
         if (child != null)
         {
@@ -77,7 +76,7 @@ public class BarnesHutAlgorithm
             return newChild;
         }
     }
-    public static void CalculateNodeParticleCenterOfMass(Node currentNode, float totalMass, Vector2 centerOfMass)
+    public void CalculateNodeParticleCenterOfMass(Node currentNode, float totalMass, Vector2 centerOfMass)
     {
         UpdateCenterOfMassAndTotalMass(currentNode.upRight, ref totalMass, ref centerOfMass);
         UpdateCenterOfMassAndTotalMass(currentNode.upLeft, ref totalMass, ref centerOfMass);
@@ -91,7 +90,7 @@ public class BarnesHutAlgorithm
         }
     }
 
-    public static void UpdateCenterOfMassAndTotalMass(Node childNode, ref float totalMass, ref Vector2 centerOfMass)
+    public void UpdateCenterOfMassAndTotalMass(Node childNode, ref float totalMass, ref Vector2 centerOfMass)
     {
         if (childNode != null)
         {

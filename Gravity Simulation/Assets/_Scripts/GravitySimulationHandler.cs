@@ -4,6 +4,8 @@ using UnityEngine;
 public class GravitySimulationHandler : MonoBehaviour
 {
     public static GravitySimulationHandler instance;
+    public BarnesHutAlgorithm barnesHutAlgorithm = new BarnesHutAlgorithm();
+    public BarnesHutDepthForSearch barnesHutDepthForSearch = new BarnesHutDepthForSearch();
     public Particle[] particles;
 
     public int NParticles;
@@ -43,7 +45,11 @@ public class GravitySimulationHandler : MonoBehaviour
             TransformParticles[i].position = particles[i].Position;
             ContinousWallsCollisionDetection(i);
         }
-        if (particles.Length >=2) BarnesHutAlgorithm.CreateBarnesHutTree(particles, -BorderSize, BorderSize);
+        if (particles.Length >= 2)
+        {
+            Node tree = barnesHutAlgorithm.CreateBarnesHutTree(particles, -BorderSize, BorderSize);
+            barnesHutDepthForSearch.SimulateGravity(tree, particles, .5f, Gravitational_constant);
+        }
     }
     public void CalculateParticlesVelicities(Particle[] particles ,int i)
     {
