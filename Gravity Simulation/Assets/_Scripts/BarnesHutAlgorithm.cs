@@ -70,8 +70,10 @@ public class BarnesHutAlgorithm
         }
         else
         {
-            Node newChild = new Node(particle);
-            newChild.dWidthOfBox = nextdWidthOfBox;
+            Node newChild = new Node(particle)
+            {
+                dWidthOfBox = nextdWidthOfBox
+            };
             newChild.InitializeNodeParticle();
             return newChild;
         }
