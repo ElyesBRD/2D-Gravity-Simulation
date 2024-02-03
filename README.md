@@ -1,6 +1,6 @@
 # 2D Gravity Simulation
 A unity project that simulates 2D particles moving around and pulling each other using neuton's third law of motion.
-For Optimization im using Barnes-hut Algorithm, and depth for search to traverse the quad tree.
+For Optimization im using Barnes-hut Algorithm, and depth first search to traverse the quad tree.
 
 # Time Complexity
 Building the tree is O(n log n)
